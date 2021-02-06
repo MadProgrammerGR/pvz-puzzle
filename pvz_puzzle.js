@@ -23,9 +23,24 @@ function onClickSolve() {
   outputTxt.text(out);
 }
 
+// solve on each rotation to find shortest move sequence
+function solve(a){
+  let minMoves = [];
+  let minLength = Number.MAX_VALUE;
+  for (var i = 0; i < a.length; i++) {
+    let moves = rotations(a.length - i, a.length) + _solve(a);
+    if(moves.length < minLength){
+      minMoves = moves;
+      minLength = moves.length;
+    }
+    a.push(a.shift());
+  }
+  return minMoves;
+}
+
 // puzzle rules: sort it only by rotating left/right
 // and swapping 3rd with 5th
-function solve(a) {
+function _solve(a) {
   let n = a.length;
   // traverse array by 2 steps
   let b = traverseWithStep(a, 2);
